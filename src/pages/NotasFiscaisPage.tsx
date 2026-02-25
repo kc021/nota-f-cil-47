@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { downloadDanfe } from "@/lib/danfe/download";
 import { useCompany } from "@/contexts/CompanyContext";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -293,7 +294,7 @@ export default function NotasFiscaisPage() {
                                 <Download className="w-4 h-4 mr-2" />
                                 Download XML
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => downloadDanfe(invoice.id)}>
                                 <Download className="w-4 h-4 mr-2" />
                                 Download DANFE
                               </DropdownMenuItem>
