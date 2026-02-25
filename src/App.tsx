@@ -21,6 +21,7 @@ import ProdutosPage from "./pages/ProdutosPage";
 import NovoProdutoPage from "./pages/NovoProdutoPage";
 import NotasFiscaisPage from "./pages/NotasFiscaisPage";
 import NovaNotaFiscalPage from "./pages/NovaNotaFiscalPage";
+import EditarEmpresaPage from "./pages/EditarEmpresaPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,7 +43,7 @@ const App = () => (
               <Route path="/dashboard" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
               <Route path="/empresas" element={<ProtectedRoute><AppLayout><EmpresasPage /></AppLayout></ProtectedRoute>} />
               <Route path="/empresas/nova" element={<ProtectedRoute><AppLayout><NovaEmpresaPage /></AppLayout></ProtectedRoute>} />
-              <Route path="/empresas/:id" element={<ProtectedRoute><AppLayout><NovaEmpresaPage /></AppLayout></ProtectedRoute>} />
+              <Route path="/empresas/:id" element={<ProtectedRoute><AppLayout><EditarEmpresaPage /></AppLayout></ProtectedRoute>} />
               <Route path="/clientes" element={<ProtectedRoute><AppLayout><ClientesPage /></AppLayout></ProtectedRoute>} />
               <Route path="/clientes/novo" element={<ProtectedRoute><AppLayout><NovoClientePage /></AppLayout></ProtectedRoute>} />
               <Route path="/clientes/:id" element={<ProtectedRoute><AppLayout><NovoClientePage /></AppLayout></ProtectedRoute>} />
