@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadDanfe } from "@/lib/danfe/download";
 import { useCompany } from "@/contexts/CompanyContext";
+import { CartaCorrecaoDialog } from "@/components/CartaCorrecaoDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +40,7 @@ import {
   XCircle,
   Building2,
   Filter,
+  FileEdit,
 } from "lucide-react";
 
 interface Invoice {
@@ -60,6 +62,7 @@ export default function NotasFiscaisPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("todos");
+  const [cceInvoice, setCceInvoice] = useState<Invoice | null>(null);
 
   useEffect(() => {
     if (selectedCompany) {
@@ -298,6 +301,10 @@ export default function NotasFiscaisPage() {
                                 <Download className="w-4 h-4 mr-2" />
                                 Download DANFE
                               </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => setCceInvoice(invoice)}>
+                                <FileEdit className="w-4 h-4 mr-2" />
+                                Carta de Correção
+                              </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
                                 onClick={() => handleCancel(invoice.id)}
@@ -318,6 +325,15 @@ export default function NotasFiscaisPage() {
           )}
         </CardContent>
       </Card>
+      {cceInvoice && (
+        <CartaCorrecaoDialog
+          open={!!cceInvoice}
+          onOpenChange={(open) => !open && setCceInvoice(null)}
+          invoiceId={cceInvoice.id}
+          invoiceNumero={cceInvoice.numero}
+          invoiceSerie={cceInvoice.serie}
+        />
+      )}
     </div>
   );
 }
