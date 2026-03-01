@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadDanfe } from "@/lib/danfe/download";
+import { generateNFeXml, downloadNFeXml } from "@/lib/nfe/xml";
 import { useCompany } from "@/contexts/CompanyContext";
 import { CartaCorrecaoDialog } from "@/components/CartaCorrecaoDialog";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,6 +42,7 @@ import {
   Building2,
   Filter,
   FileEdit,
+  FileCode,
 } from "lucide-react";
 
 interface Invoice {
@@ -291,9 +293,18 @@ export default function NotasFiscaisPage() {
                               Visualizar
                             </Link>
                           </DropdownMenuItem>
+                          {invoice.status === "rascunho" && (
+                            <DropdownMenuItem onClick={async () => {
+                              const result = await generateNFeXml(invoice.id);
+                              if (result.success) fetchInvoices();
+                            }}>
+                              <FileCode className="w-4 h-4 mr-2" />
+                              Gerar XML / Assinar
+                            </DropdownMenuItem>
+                          )}
                           {invoice.status === "autorizada" && (
                             <>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => downloadNFeXml(invoice.id)}>
                                 <Download className="w-4 h-4 mr-2" />
                                 Download XML
                               </DropdownMenuItem>
