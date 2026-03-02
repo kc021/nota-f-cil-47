@@ -22,6 +22,7 @@ import NovoProdutoPage from "./pages/NovoProdutoPage";
 import NotasFiscaisPage from "./pages/NotasFiscaisPage";
 import NovaNotaFiscalPage from "./pages/NovaNotaFiscalPage";
 import EditarEmpresaPage from "./pages/EditarEmpresaPage";
+import DetalhesNotaFiscalPage from "./pages/DetalhesNotaFiscalPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,7 +53,7 @@ const App = () => (
               <Route path="/produtos/:id" element={<ProtectedRoute><AppLayout><NovoProdutoPage /></AppLayout></ProtectedRoute>} />
               <Route path="/notas-fiscais" element={<ProtectedRoute><AppLayout><NotasFiscaisPage /></AppLayout></ProtectedRoute>} />
               <Route path="/notas-fiscais/nova" element={<ProtectedRoute><AppLayout><NovaNotaFiscalPage /></AppLayout></ProtectedRoute>} />
-              <Route path="/notas-fiscais/:id" element={<ProtectedRoute><AppLayout><NotasFiscaisPage /></AppLayout></ProtectedRoute>} />
+              <Route path="/notas-fiscais/:id" element={<ProtectedRoute><AppLayout><DetalhesNotaFiscalPage /></AppLayout></ProtectedRoute>} />
               <Route path="/configuracoes" element={<ProtectedRoute><AppLayout><DashboardPage /></AppLayout></ProtectedRoute>} />
               
               <Route path="*" element={<NotFound />} />
