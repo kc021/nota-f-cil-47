@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { downloadDanfe } from "@/lib/danfe/download";
 import { generateNFeXml, downloadNFeXml } from "@/lib/nfe/xml";
+import { transmitNFe, consultNFe } from "@/lib/nfe/sefaz";
 import { useCompany } from "@/contexts/CompanyContext";
 import { CartaCorrecaoDialog } from "@/components/CartaCorrecaoDialog";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,6 +44,8 @@ import {
   Filter,
   FileEdit,
   FileCode,
+  Send,
+  SearchCheck,
 } from "lucide-react";
 
 interface Invoice {
@@ -294,12 +297,36 @@ export default function NotasFiscaisPage() {
                             </Link>
                           </DropdownMenuItem>
                           {invoice.status === "rascunho" && (
+                            <>
+                              <DropdownMenuItem onClick={async () => {
+                                const result = await generateNFeXml(invoice.id);
+                                if (result.success) fetchInvoices();
+                              }}>
+                                <FileCode className="w-4 h-4 mr-2" />
+                                Gerar XML / Assinar
+                              </DropdownMenuItem>
+                            </>
+                          )}
+                          {(invoice.status === "pendente" || invoice.status === "rascunho") && (
                             <DropdownMenuItem onClick={async () => {
-                              const result = await generateNFeXml(invoice.id);
-                              if (result.success) fetchInvoices();
+                              // Auto-generate XML if not yet done
+                              if (invoice.status === "rascunho") {
+                                const xmlResult = await generateNFeXml(invoice.id);
+                                if (!xmlResult.success) return;
+                              }
+                              const result = await transmitNFe(invoice.id);
+                              if (result) fetchInvoices();
                             }}>
-                              <FileCode className="w-4 h-4 mr-2" />
-                              Gerar XML / Assinar
+                              <Send className="w-4 h-4 mr-2" />
+                              Transmitir para SEFAZ
+                            </DropdownMenuItem>
+                          )}
+                          {invoice.status !== "rascunho" && (
+                            <DropdownMenuItem onClick={async () => {
+                              await consultNFe(invoice.id);
+                            }}>
+                              <SearchCheck className="w-4 h-4 mr-2" />
+                              Consultar na SEFAZ
                             </DropdownMenuItem>
                           )}
                           {invoice.status === "autorizada" && (
